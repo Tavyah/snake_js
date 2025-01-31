@@ -5,7 +5,7 @@ let snakePosX = Math.floor(tileSizeX / 2) * snakeSize;
 let snakePosY = Math.floor(tileSizeY / 2) * snakeSize;
 let snakeSpeedX = 0;
 let snakeSpeedY = 0;
-let snakeBody = [snakePosX, snakePosY];
+let snakeBody = [[snakePosX, snakePosY]];
 let gameOver = false;
 let score = 0;
 let foodPosX;
@@ -35,17 +35,16 @@ function update() {
         return;
     };
 
-    if(snakeBody) {
-        console.log("snakeBOSY");
-    }
-    // Fjern gammel slange
-    for(let i = snakeBody.length; i > snakeBody.length; i--) {
-        ctx.clearRect(snakeBody[i][0], snakeBody[i][1], snakeSize, snakeSize);
-    }
-    
+    // Fjern den bakerste delen av slangen
+    ctx.fillStyle = "rgb(86, 150, 41)";
+    ctx.fillRect(snakeBody[0][0], snakeBody[0][1], snakeSize, snakeSize);
+
+    // if(snakeBody) {
+    //     snakeBody[0] = [snakePosX, snakePosY];
+    // }    
     
     // Fargelegg kor maten ska være basert på tilfeldige koordinater
-        ctx.fillStyle = "rgb(193, 28, 28)";
+    ctx.fillStyle = "rgb(193, 28, 28)";
     ctx.fillRect(foodPosX, foodPosY, snakeSize, snakeSize);
 
     // Fargelegg kor slagen ska være
@@ -55,6 +54,9 @@ function update() {
     snakePosY += snakeSpeedY * snakeSize;
     // Fyll ut slange posisjoner
     ctx.fillRect(snakePosX, snakePosY, snakeSize, snakeSize);
+    // for(let i = 0; i < snakeBody.length; i++) {
+    //     ctx.fillRect(snakeBody[i][0], snakeBody[i][1], snakeSize, snakeSize);
+    // }
 
     // Legg til slangekropp i liste
     if(snakePosX === foodPosX && snakePosY === foodPosY) {
@@ -62,11 +64,19 @@ function update() {
         placeFood();
     }
 
-    for(let i = 0; i < snakeBody.length; i++) {
-        snakeBody[i] = [snakePosX - i, snakePosY - i];
-    }
-    // Hvis man treffer sæ sjøl så taper man
+    // Oppdaterer posisjonen til alle slangedeler
+    // for(let i = 1; i <= snakeBody.length; i++) {
+    //     snakeBody[i] = snakeBody[i-1];
+    // }
     console.log(snakeBody);
+    snakeBody.unshift(snakeBody[1]);
+
+    // Hvis man treffer sæ sjøl så taper man
+    console.log(snakePosX);
+    console.log(snakePosY);
+    console.log(snakeBody);
+
+    
 };
 
 function direction(e) {
