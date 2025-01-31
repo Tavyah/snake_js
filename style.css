@@ -1,0 +1,43 @@
+/* All */
+
+html {
+    background-color: rgb(211, 91, 165);
+}
+
+/* Header */
+
+header {
+    margin: 0 auto;
+}
+
+p, h1 {
+    text-align: center;
+}
+
+/* Main */
+main {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#dropdown {
+
+}
+
+#gameboard {
+    height: 500px;
+    width: 500px;
+    border-color: black;
+    border-style: solid;
+}
+
+#highscore {
+
+}
+
+/* Footer */
+footer {
+    margin-top: 3%;
+    margin-left: 70%;
+}
