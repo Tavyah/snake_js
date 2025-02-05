@@ -25,6 +25,10 @@ main {
 
 }
 
+#score {
+    text-align: right;
+}
+
 #gameboard {
     height: 500px;
     width: 500px;
