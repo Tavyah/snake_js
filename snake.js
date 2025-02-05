@@ -25,9 +25,7 @@ let playerName;
 
 window.onload = function() {
     playerName = getPlayerName();
-    makeCookie();
-    let highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
-    displayHighScores(highScores);
+    displayHighScores(JSON.parse(localStorage.getItem('highScores') || '[]'));
 
     canvas = document.getElementById("gameboard");
     ctx = canvas.getContext("2d");
@@ -86,17 +84,20 @@ function update() {
         || snakePosY > tileSizeY * snakeSize) { 
         
         gameOver = true;
-        alert("Game Over");
+        gameEnd();
         setScore();
+        //restartGame();
     }
 
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakePosX == snakeBody[i][0] && snakePosY == snakeBody[i][1]) { 
             
             // Slange spise seg
+            
             gameOver = true;
-            alert("Game Over");
+            gameEnd();
             setScore();
+            //restartGame();
         }
     }
 };
@@ -138,6 +139,9 @@ function placeFood() {
     foodPosX = Math.floor(Math.random() * tileSizeX) * snakeSize;
     
     foodPosY = Math.floor(Math.random() * tileSizeY) * snakeSize;
+    if(foodPosX === snakePosX && foodPosY === snakePosY) {
+        placeFood();
+    }
 };
 
 function addScore() {
@@ -153,31 +157,11 @@ function getPlayerName() {
     return playerName;
 }
 
-function makeCookie() {
-    const date = new Date();
-    date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + date.toUTCString();
-    document.cookie = playerName + "=" + score + ";" + expires + ";path=/";
-}
-
-function getCookie() {
-    let nameEQ = playerName + "=";
-    let ca = document.cookie.split(';');
-    console.log(ca);
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
 function setScore() {
-    let playerName = getCookie() || 'Anonymous';
     let highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
-    highScores.push({ name: playerName, score: score });
+    highScores.push({name: playerName, score: score});
     highScores.sort((a, b) => b.score - a.score);
-    highScores = highScores.slice(0, 10);
+    highScores.splice(10);
     localStorage.setItem('highScores', JSON.stringify(highScores));
     displayHighScores(highScores);
 }
@@ -190,4 +174,31 @@ function displayHighScores(highScores) {
         li.textContent = `${scoreEntry.name}: ${scoreEntry.score}`;
         highScoreList.appendChild(li);
     });
+}
+
+function restartGame() {
+    // Reset snake position and speed
+    snakePosX = tileSizeX / 2;
+    snakePosY = tileSizeY / 2;
+    snakeSpeedX = 0;
+    snakeSpeedY = 0;
+    
+    // Reset score
+    score = 0;
+    document.getElementById("score").innerText = 'Score: ' + score;
+    
+    // Clear the game over flag
+    gameOver = false;
+    
+    // Place new food
+    placeFood();
+    
+    // Restart the game loop
+    clearInterval(gameInterval);
+    gameInterval = setInterval(update, 1000 / 10);
+}
+
+function gameEnd() {
+    let canvas = document.querySelector('gameboard');
+    canvas.innerHTML = 'Game Over!';
 }
