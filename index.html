@@ -4,6 +4,7 @@
         <title>Snake</title>
         <link rel="stylesheet" href="style.css">
         <script src="snake.js"></script>
+        <script src="dropdown.js"></script>
     </head>
     <body>
         <header>
@@ -14,7 +15,11 @@
         </header>
         <main>
             <div id="dropdown">
-                <button>Dropdown button</button>
+                <button onclick="openDropdown()" class="dropdown-btn">Game mode</button>
+                <div id="myDropdown" class="dropdown-content">
+                    <button onclick="classicGameplay()">Classic Gameplay</button>
+                    <button onclick="speedGameplay()">Speed Gameplay</button>
+                  </div>
             </div>
             <div>
                 <div id="score">Score: 0</div>

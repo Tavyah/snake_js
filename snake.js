@@ -22,6 +22,9 @@ let ctx;
 let score = 0;
 
 let playerName;
+let gameInterval;
+
+let snakeSpeed = 1;
 
 window.onload = function() {
     playerName = getPlayerName();
@@ -32,11 +35,7 @@ window.onload = function() {
     canvas.width = snakeSize * tileSizeX;
     canvas.height = snakeSize * tileSizeY;
 
-    // Velg lokasjon til maten
-    placeFood();
-    
-    document.addEventListener('keydown', direction);
-    setInterval(update, 1000 / 10);
+    classicGameplay();
 }; 
 
 function update() {
@@ -86,18 +85,15 @@ function update() {
         gameOver = true;
         gameEnd();
         setScore();
-        //restartGame();
     }
 
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakePosX == snakeBody[i][0] && snakePosY == snakeBody[i][1]) { 
             
             // Slange spise seg
-            
             gameOver = true;
             gameEnd();
             setScore();
-            //restartGame();
         }
     }
 };
@@ -106,30 +102,30 @@ function direction(e) {
     switch(e.code) {
         case "KeyA":
             if(snakeSpeedX !== 1) {
-                snakeSpeedX -= 1;
-                snakeSpeedY = 0;
+                snakeSpeedX -= 1 * snakeSpeed;
+                snakeSpeedY = 0 * snakeSpeed;
             }
             
             break;
         case "KeyD":
             if(snakeSpeedX !== -1)
             {
-                snakeSpeedX += 1;
-                snakeSpeedY = 0;
+                snakeSpeedX += 1 * snakeSpeed;
+                snakeSpeedY = 0 * snakeSpeed;
             }
             break;
         case "KeyS":
             if(snakeSpeedY !== -1)
             {
-                snakeSpeedY += 1;
-                snakeSpeedX = 0;
+                snakeSpeedY += 1 * snakeSpeed;
+                snakeSpeedX = 0 * snakeSpeed;
             }
             break;
         case "KeyW":
             if(snakeSpeedY !== 1)
             {
-                snakeSpeedY -= 1;
-                snakeSpeedX = 0;
+                snakeSpeedY -= 1 * snakeSpeed;
+                snakeSpeedX = 0 * snakeSpeed;
             }
             break;
     }
@@ -178,8 +174,8 @@ function displayHighScores(highScores) {
 
 function restartGame() {
     // Reset snake position and speed
-    snakePosX = tileSizeX / 2;
-    snakePosY = tileSizeY / 2;
+    snakePosX = snakeSize ** 2;
+    snakePosY = snakeSize** 2;
     snakeSpeedX = 0;
     snakeSpeedY = 0;
     
@@ -190,15 +186,42 @@ function restartGame() {
     // Clear the game over flag
     gameOver = false;
     
-    // Place new food
+    // Velg lokasjon til maten
     placeFood();
     
-    // Restart the game loop
+    document.addEventListener('keydown', direction);
     clearInterval(gameInterval);
     gameInterval = setInterval(update, 1000 / 10);
 }
 
 function gameEnd() {
-    let canvas = document.querySelector('gameboard');
-    canvas.innerHTML = 'Game Over!';
+    let canvas = document.getElementById('gameboard');
+    let ctx = canvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = 'white';
+    ctx.font = '48px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+    ctx.font = '24px serif';
+    ctx.fillText('Press space to restart', canvas.width / 2, canvas.height / 2 + 30);
+
+    document.addEventListener('keydown', handleRestart, { once: true });
+}
+
+function handleRestart(e) {
+    if(e.code === 'Space') {
+        restartGame();
+    }
+}
+
+function classicGameplay() {
+    snakeSpeed = 1;
+    restartGame();
+}
+
+function speedGameplay() {
+    snakeSpeed = 2;
+    restartGame();
 }
