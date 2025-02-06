@@ -173,6 +173,9 @@ function displayHighScores(highScores) {
 }
 
 function restartGame() {
+    if(addEventListener('keydown', handleRestart)) {
+        removeEventListener('keydown', handleRestart);
+    }
     // Reset snake position and speed
     snakePosX = snakeSize ** 2;
     snakePosY = snakeSize** 2;
@@ -207,6 +210,7 @@ function gameEnd() {
     ctx.font = '24px serif';
     ctx.fillText('Press space to restart', canvas.width / 2, canvas.height / 2 + 30);
 
+    removeEventListener('keydown', direction);
     document.addEventListener('keydown', handleRestart, { once: true });
 }
 
@@ -222,6 +226,6 @@ function classicGameplay() {
 }
 
 function speedGameplay() {
-    snakeSpeed = 2;
+    snakeSpeed = 1.5;
     restartGame();
 }
