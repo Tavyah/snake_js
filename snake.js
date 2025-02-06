@@ -96,36 +96,47 @@ function update() {
             setScore();
         }
     }
+    // console.log(snakeSpeed);
+    // console.log(snakeSpeedX);
+    // console.log(snakeSpeedY);
+    console.log('foodX: ' + foodPosX);
+    console.log('foodY: ' +foodPosY);
+    // console.log('X: ' +snakePosX);
+    // console.log('Y: ' +snakePosY);
+    // console.log('snakeY:' + snakeSpeedY);
+    // console.log('snakeX:' + snakeSpeedX);
+    console.log(canvas.width);
+    console.log(canvas.height);
 };
 
 function direction(e) {
     switch(e.code) {
         case "KeyA":
             if(snakeSpeedX !== 1) {
-                snakeSpeedX -= 1 * snakeSpeed;
-                snakeSpeedY = 0 * snakeSpeed;
+                snakeSpeedX -= snakeSpeed;
+                snakeSpeedY = 0;
             }
             
             break;
         case "KeyD":
             if(snakeSpeedX !== -1)
             {
-                snakeSpeedX += 1 * snakeSpeed;
-                snakeSpeedY = 0 * snakeSpeed;
+                snakeSpeedX += snakeSpeed;
+                snakeSpeedY = 0;
             }
             break;
         case "KeyS":
             if(snakeSpeedY !== -1)
             {
-                snakeSpeedY += 1 * snakeSpeed;
-                snakeSpeedX = 0 * snakeSpeed;
+                snakeSpeedY += snakeSpeed;
+                snakeSpeedX = 0;
             }
             break;
         case "KeyW":
             if(snakeSpeedY !== 1)
             {
-                snakeSpeedY -= 1 * snakeSpeed;
-                snakeSpeedX = 0 * snakeSpeed;
+                snakeSpeedY -= snakeSpeed;
+                snakeSpeedX = 0;
             }
             break;
     }
@@ -133,11 +144,19 @@ function direction(e) {
 
 function placeFood() {
     foodPosX = Math.floor(Math.random() * tileSizeX) * snakeSize;
-    
+    foodPosX *= snakeSpeed;
     foodPosY = Math.floor(Math.random() * tileSizeY) * snakeSize;
-    if(foodPosX === snakePosX && foodPosY === snakePosY) {
-        placeFood();
+    foodPosY *= snakeSpeed;
+
+    while(true) {
+        if(foodPosX === snakePosX && foodPosY === snakePosY || foodPosX > canvas.width || foodPosY > canvas.height) {
+            placeFood();
+        }
+        else {
+            break;
+        }
     }
+    
 };
 
 function addScore() {
@@ -200,7 +219,7 @@ function restartGame() {
 function gameEnd() {
     let canvas = document.getElementById('gameboard');
     let ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillStyle = 'rgb(0, 0, 0)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     ctx.fillStyle = 'white';
