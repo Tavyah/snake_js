@@ -96,17 +96,6 @@ function update() {
             setScore();
         }
     }
-    // console.log(snakeSpeed);
-    // console.log(snakeSpeedX);
-    // console.log(snakeSpeedY);
-    console.log('foodX: ' + foodPosX);
-    console.log('foodY: ' +foodPosY);
-    // console.log('X: ' +snakePosX);
-    // console.log('Y: ' +snakePosY);
-    // console.log('snakeY:' + snakeSpeedY);
-    // console.log('snakeX:' + snakeSpeedX);
-    console.log(canvas.width);
-    console.log(canvas.height);
 };
 
 function direction(e) {

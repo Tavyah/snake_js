@@ -2,6 +2,7 @@
 
 html {
     background-color: rgb(211, 91, 165);
+    font-family: snakeFont;
 }
 
 /* Header */
@@ -11,8 +12,17 @@ header {
 }
 
 p, h1 {
-    text-align: center;
+    text-align: center;  
+    font-family: snakeFontHollow;
+    font-size: 50px;
 }
+
+h1 {
+    font-size: 100px;
+    letter-spacing: 10px;
+}
+
+
 
 /* Main */
 main {
@@ -21,56 +31,76 @@ main {
     align-items: center;
 }
 
-#dropdown {
-
-}
 /* Dropdown Button */
 .dropbtn {
-background-color: #3498DB;
+background-color: #000000;
 color: white;
 padding: 16px;
 font-size: 16px;
 border: none;
 cursor: pointer;
+font-family: snakeFont;
+letter-spacing: .2rem;
 }
 
 /* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
-background-color: #2980B9;
+.dropbtn:hover {
+background-color: rgb(86, 150, 41);
+color:#000000;
 }
 
+.dropbtn:focus {
+    background-color: black;
+    color:white;
+}
 /* The container <div> - needed to position the dropdown content */
-.dropdown {
+#dropdown {
 position: relative;
 display: inline-block;
+align-self: flex-start;
+padding-top: 4%;
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-display: none;
-position: absolute;
-background-color: #f1f1f1;
-min-width: 160px;
-box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-z-index: 1;
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
-color: black;
-padding: 12px 16px;
-text-decoration: none;
-display: block;
+/* Buttons inside the dropdown */
+.dropdown-content button {
+    background-color: rgb(86, 150, 41);
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: snakeFont;
+    letter-spacing: .1rem;
+    width: 100%;
+    text-align: left;
+    box-sizing: border-box;
+    border: none;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
+/* Change color of dropdown buttons on hover */
+.dropdown-content button:hover {
+    background-color: black;
+    color: white;
+}
 
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {display:block;}
+/* Show the dropdown menu */
+.show {
+    display:block;
+    width: auto;
+}
 
 #score {
     text-align: right;
+    font-size: 30px;
 }
 
 #gameboard {
@@ -81,11 +111,47 @@ display: block;
 }
 
 #highscore {
+    text-align: center;
+    justify-items: center;
+}
 
+#highscore ol {
+    padding: 0;
+}
+
+#highscore li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 5px;
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 60px;
+    margin: 10% 0;
+    letter-spacing: 3px;
+}
+
+#highscore p {
+    margin: 5% 0;
 }
 
 /* Footer */
 footer {
-    margin-top: 3%;
+    margin-top: 5%;
     margin-left: 70%;
+}
+
+/* FONTS */
+
+@font-face {
+    font-family: snakeFont;
+    src: url(./fonts/MortuaryBB_Reg.ttf);
+  }
+
+@font-face {
+    font-family: snakeFontHollow;
+    src: url(./fonts/MortuaryDecoBB_Reg.ttf);
 }
