@@ -83,8 +83,9 @@ function update() {
         || snakePosY > tileSizeY * snakeSize) { 
         
         gameOver = true;
-        gameEnd();
         setScore();
+        gameEnd();
+        
     }
 
     for (let i = 0; i < snakeBody.length; i++) {
@@ -92,8 +93,9 @@ function update() {
             
             // Slange spise seg
             gameOver = true;
-            gameEnd();
             setScore();
+            gameEnd();
+            
         }
     }
 };

@@ -38,6 +38,26 @@ main {
     padding-top: 25%;
 }
 
+#dropdown h3 p {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#dropdown p {
+    padding: 2% 5px;
+    margin: 0;
+}
+
+#dropdown h3 {
+    font-size: 30px;
+    margin: 0;
+    padding-top: 2%;
+    text-align: center;
+    align-items: center;
+}
+
 /* Dropdown Button */
 .dropbtn {
 background-color: #000000;
