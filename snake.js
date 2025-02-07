@@ -25,6 +25,7 @@ let playerName;
 let gameInterval;
 
 let snakeSpeed = 1;
+let classic = true;
 
 window.onload = function() {
     playerName = getPlayerName();
@@ -103,28 +104,28 @@ function update() {
 function direction(e) {
     switch(e.code) {
         case "KeyA":
-            if(snakeSpeedX !== 1) {
+            if(snakeSpeedX !== snakeSpeed) {
                 snakeSpeedX -= snakeSpeed;
                 snakeSpeedY = 0;
             }
             
             break;
         case "KeyD":
-            if(snakeSpeedX !== -1)
+            if(snakeSpeedX !== -snakeSpeed)
             {
                 snakeSpeedX += snakeSpeed;
                 snakeSpeedY = 0;
             }
             break;
         case "KeyS":
-            if(snakeSpeedY !== -1)
+            if(snakeSpeedY !== -snakeSpeed)
             {
                 snakeSpeedY += snakeSpeed;
                 snakeSpeedX = 0;
             }
             break;
         case "KeyW":
-            if(snakeSpeedY !== 1)
+            if(snakeSpeedY !== snakeSpeed)
             {
                 snakeSpeedY -= snakeSpeed;
                 snakeSpeedX = 0;
@@ -134,10 +135,8 @@ function direction(e) {
 };
 
 function placeFood() {
-    foodPosX = Math.floor(Math.random() * tileSizeX) * snakeSize;
-    foodPosX *= snakeSpeed;
-    foodPosY = Math.floor(Math.random() * tileSizeY) * snakeSize;
-    foodPosY *= snakeSpeed;
+    foodPosX = Math.floor(Math.random() * tileSizeX) * snakeSize * snakeSpeed;
+    foodPosY = Math.floor(Math.random() * tileSizeY) * snakeSize * snakeSpeed;
 
     while(true) {
         if(foodPosX === snakePosX && foodPosY === snakePosY || foodPosX > canvas.width || foodPosY > canvas.height) {
@@ -157,19 +156,29 @@ function addScore() {
 
 function getPlayerName() {
     let playerName = prompt("Enter your name");
-    if(playerName === null) {
+    if(playerName === null || playerName === "") {
         playerName = "Anonymous";
     }
     return playerName;
 }
 
 function setScore() {
-    let highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
-    highScores.push({name: playerName, score: score});
-    highScores.sort((a, b) => b.score - a.score);
-    highScores.splice(10);
-    localStorage.setItem('highScores', JSON.stringify(highScores));
-    displayHighScores(highScores);
+    if(!classic) {
+        let highScores = JSON.parse(localStorage.getItem('highScoresSpeed') || '[]');
+        highScores.push({name: playerName, score: score});
+        highScores.sort((a, b) => b.score - a.score);
+        highScores.splice(10);
+        localStorage.setItem('highScoresSpeed', JSON.stringify(highScores));
+        displayHighScores(highScores);
+    }
+    else {
+        let highScores = JSON.parse(localStorage.getItem('highScores') || '[]');
+        highScores.push({name: playerName, score: score});
+        highScores.sort((a, b) => b.score - a.score);
+        highScores.splice(10);
+        localStorage.setItem('highScores', JSON.stringify(highScores));
+        displayHighScores(highScores);
+    }
 }
 
 function displayHighScores(highScores) {
@@ -183,9 +192,8 @@ function displayHighScores(highScores) {
 }
 
 function restartGame() {
-    if(addEventListener('keydown', handleRestart)) {
-        removeEventListener('keydown', handleRestart);
-    }
+    document.removeEventListener('keydown', handleRestart);
+
     // Reset snake position and speed
     snakePosX = snakeSize ** 2;
     snakePosY = snakeSize** 2;
@@ -198,13 +206,15 @@ function restartGame() {
     
     // Clear the game over flag
     gameOver = false;
+    snakeBody = [];
     
     // Velg lokasjon til maten
     placeFood();
     
     document.addEventListener('keydown', direction);
     clearInterval(gameInterval);
-    gameInterval = setInterval(update, 1000 / 10);
+    gameInterval = setInterval(update, 1000 / (10));
+
 }
 
 function gameEnd() {
@@ -232,10 +242,14 @@ function handleRestart(e) {
 
 function classicGameplay() {
     snakeSpeed = 1;
+    classic = true;
+    displayHighScores(JSON.parse(localStorage.getItem('highScores') || '[]'));
     restartGame();
 }
 
 function speedGameplay() {
     snakeSpeed = 1.5;
+    classic = false;
+    displayHighScores(JSON.parse(localStorage.getItem('highScoresSpeed') || '[]'));
     restartGame();
 }
